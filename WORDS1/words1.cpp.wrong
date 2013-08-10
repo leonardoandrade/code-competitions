@@ -1,0 +1,133 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX_WORDS 100000
+#define MAX_WORD_SIZE 2000
+
+
+int in_degrees[MAX_WORDS];
+int out_degrees[MAX_WORDS]; 
+int visited[MAX_WORDS];
+long long  ccc=0;
+void print_words(char words[MAX_WORDS][3], int nwords)
+{
+    for(int i=0; i<nwords; i++)
+	{
+		printf("%d:%s ",i, words[i]);
+	}
+	printf("\n");     
+}
+
+void count_visited(int visited[MAX_WORDS], int nwords)
+{   
+    int c=0;
+    for(int i=0; i<nwords; i++)
+    {
+        if(visited[i]!=0)
+        {
+            c++;
+        }
+    }
+    printf("%d/%d\n", c, nwords);
+}
+
+int check_connected(char words[MAX_WORDS][3], char word[2], int index, int nwords)
+{
+    
+    //count_visited(visited, nwords);
+    if(visited[index]!=0)
+    {
+        //printf(".");
+        return 1;
+    }
+    visited[index]=1;
+    for(int i=0; i<nwords; i++)
+    {
+        ccc++;
+        if(i==index  || visited[i]!=0)
+        {
+            continue;
+        }
+        else if(word[1]==words[i][0])
+        {
+              return  check_connected(words, words[i],i,nwords);
+        }
+        else if(word[0]==words[i][1])
+        {
+              return check_connected(words, words[i],i,nwords);
+        }
+    }
+    return 1;
+}
+
+//3200119999
+//6400000000
+int solve(char words[MAX_WORDS][3], int nwords)
+{
+
+    
+    for(int i=0; i<nwords;i++)
+    {
+        in_degrees[i]=0;
+        out_degrees[i]=0;
+        visited[i]=0;
+    }
+    check_connected(words, words[0],0, nwords);
+    printf("ccc:%lld\n",ccc);
+    return 0;
+    int unmatched=0;
+    for(int i=0; i<nwords;i++)
+    {
+        //printf("%d %d\n",in_degrees[i],out_degrees[i]);
+        if(in_degrees[i]!=out_degrees[i])
+        {
+            unmatched++;    
+        }
+        if(in_degrees[i]==0 && out_degrees[i]==0)
+        {
+            unmatched=10;    
+        }
+    }
+
+    //print_words(words, nwords);
+    //printf("\n");
+    
+    if(unmatched<=2)
+    {
+        printf("Ordering is possible.\n");
+    }
+    else
+    {
+        printf("The door cannot be opened.\n");
+    }
+}
+
+
+
+int main()
+{
+	int ncases;
+	scanf("%d",&ncases);
+	for(int i=0; i< ncases; i++)
+	{
+	   char  words[MAX_WORDS][3];
+            int nwords;
+	    
+	    scanf("%d",&nwords);
+	    for(int j=0;j<nwords;j++)
+	    {
+	        char tmp_word[MAX_WORD_SIZE];
+            scanf("%s",tmp_word);
+            
+            char w[2];
+            words[j][0]=tmp_word[0];
+            words[j][1]=tmp_word[(int)(strlen(tmp_word)-1)];
+            words[j][2]='\0';
+	    }
+	    solve(words, nwords);
+	}
+	
+	
+}

@@ -1,0 +1,106 @@
+#include <stdio.h>
+#include <unistd.h>
+#include <math.h>
+#include <stdlib.h>
+#include <string.h>
+#define MAX_WORDS 100000
+#define MAX_WORD_SIZE 2000
+
+//recursion, withoud copying vectors
+bool find_sequence(char words_available[MAX_WORDS][3], int nwords, int count, char last_word[2], int last_index)
+{
+    count++;
+    if(nwords==count)
+    {
+        //printf("%s\n",last_word);
+        return true;
+    }
+    char last_word_copy[2];
+    last_word_copy[0]=last_word[0];
+    last_word_copy[1]=last_word[1];
+
+    for(int i=0;i<nwords;i++)
+    {
+        if(words_available[i][0]==last_word[1])
+        {
+            last_word[0]=words_available[i][0];
+            last_word[1]=words_available[i][1];
+            words_available[i][0]='_';
+            words_available[i][1]='_';
+            
+            if(find_sequence(words_available,  nwords,  count, last_word, i))
+            {
+                return true;
+            }
+            else
+            {
+              words_available[i][0]=last_word[0];
+              words_available[i][1]=last_word[1];
+              last_word[0]=last_word_copy[0];
+              last_word[1]=last_word_copy[1];
+              
+            }
+        }
+    }
+    words_available[last_index][0]=last_word_copy[0];
+    words_available[last_index][1]=last_word_copy[1];
+    
+    return false;
+
+    
+   
+}
+
+
+int solve(char words[MAX_WORDS][3], int nwords)
+{
+    /*
+	for(int i=0; i<nwords; i++)
+	{
+		printf("%s %d\n",words[i],(int)strlen(words[i]));
+	}
+	printf("\n");
+	*/
+    for(int i=0;i<nwords;i++)
+    {
+        char last_word[2];
+        last_word[0]=words[i][0];
+        last_word[1]=words[i][1];
+        words[i][0]='_';
+        words[i][1]='_';
+        if(find_sequence(words, nwords, 0,  last_word, i))
+        {
+            printf("Ordering is possible.\n");
+            return 0;           
+        }
+    }
+    printf("The door cannot be opened.\n");
+}
+
+
+
+int main()
+{
+	int ncases;
+	scanf("%d",&ncases);
+	for(int i=0; i< ncases; i++)
+	{
+	   char  words[MAX_WORDS][3];
+            int nwords;
+	    
+	    scanf("%d",&nwords);
+	    for(int j=0;j<nwords;j++)
+	    {
+	        char tmp_word[MAX_WORD_SIZE];
+            scanf("%s",tmp_word);
+            
+            char w[2];
+            words[j][0]=tmp_word[0];
+            words[j][1]=tmp_word[(int)(strlen(tmp_word)-1)];
+            words[j][2]='\0';
+	    }
+	    solve(words, nwords);
+	}
+	
+	
+}
