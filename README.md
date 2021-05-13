@@ -4,3 +4,5 @@ Some [ACM/ICPC](https://en.wikipedia.org/wiki/International_Collegiate_Programmi
 
 * [http://www.spoj.com/users/la_pt/](http://www.spoj.com/users/la_pt/)
 * [https://codeforces.com/profile/leonardoandrade](https://codeforces.com/profile/leonardoandrade)
+
+Also, [Project Euler](https://projecteuler.net) problems, in Haskell.
