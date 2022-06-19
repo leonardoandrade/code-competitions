@@ -11,3 +11,4 @@
 | 4       | linear search, lots of prunning          | 
 | 5       | search forwards, considering numbers from  11 to  20 | 
 | 6       | find polynomial behind the logic, via Lagrange interpolation (this was done in Python, then apply polynomial to large number) | 
+| 7       | brute forced so far, need to find some smart sieving approach | 
